@@ -1,52 +1,47 @@
 import streamlit as st
-import openai
+from openai import OpenAI
 
-# Set up your OpenAI API key
-openai.api_key = 'YOUR_OPENAI_API_KEY'
+# Initialize OpenAI client using Streamlit's secrets
+client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 
-# Streamlit App configuration
-st.set_page_config(page_title="GPT Chat Interface", page_icon="💬")
+# Title of the app
+st.title("CJ's Chat aPP")
 
-# App title
-st.title("GPT Chat Interface")
-
-# Initialize session state to store conversation history
+# Initialize session state for chat history
 if "messages" not in st.session_state:
-    st.session_state["messages"] = [{"role": "system", "content": "You are a helpful assistant."}]
+    st.session_state.messages = []
 
-# Display chat history from session state
-def display_chat_history():
-    for message in st.session_state["messages"]:
-        if message["role"] == "user":
-            st.write("**You:** " + message["content"])
-        else:
-            st.write("**GPT:** " + message["content"])
+# Display chat history
+for message in st.session_state.messages:
+    role, content = message["role"], message["content"]
+    with st.chat_message(role):
+        st.markdown(content)
 
-# Get user input and display chat history
-user_input = st.text_input("You:", key="user_input", placeholder="Type your message here...")
-if user_input:
-    # Append user message to messages
-    st.session_state["messages"].append({"role": "user", "content": user_input})
-    
-    # Display updated chat history
-    display_chat_history()
+# Collect user input
+user_input = st.chat_input("Type your message...")
 
-    # Get GPT response
-    response = openai.ChatCompletion.create(
+# Function to get a response from OpenAI
+def get_response(prompt):
+    response = client.chat.completions.create(
         model="gpt-3.5-turbo",
-        messages=st.session_state["messages"]
+        messages=[
+            {"role": m["role"], "content": m["content"]}
+            for m in st.session_state.messages
+        ] + [{"role": "user", "content": prompt}]
     )
+    # Access the content directly as an attribute
+    return response.choices[0].message.content
 
-    # Extract and display GPT response
-    gpt_response = response["choices"][0]["message"]["content"]
-    st.session_state["messages"].append({"role": "assistant", "content": gpt_response})
-    
-    # Clear the input field
-    st.text_input("You:", key="user_input", placeholder="Type your message here...", value="", disabled=True)
+# Process and display response if there's input
+if user_input:
+    # Append user's message
+    st.session_state.messages.append({"role": "user", "content": user_input})
+    with st.chat_message("user"):
+        st.markdown(user_input)
 
-# Display the chat history for all messages
-display_chat_history()
+    # Generate assistant's response
+    assistant_response = get_response(user_input)
+    st.session_state.messages.append({"role": "assistant", "content": assistant_response})
 
-# Option to clear chat history
-if st.button("Clear Chat"):
-    st.session_state["messages"] = [{"role": "system", "content": "You are a helpful assistant."}]
+    with st.chat_message("assistant"):
+        st.markdown(assistant_response)
