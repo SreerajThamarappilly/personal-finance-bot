@@ -9,7 +9,8 @@ st.title("Personal Finance Chat App")
 
 # Initialize session state for chat history
 if "messages" not in st.session_state:
-    st.session_state.messages = []
+    # Set up initial system message to ensure GPT only answers personal finance questions
+    st.session_state.messages = [{"role": "system", "content": "You are an assistant that answers only questions about personal finance. You can discuss topics like saving money, budgeting, investing, retirement planning, managing debt, taxes, and other aspects related to personal finance. Do not answer questions that are not related to personal finance."}]
 
 # Display chat history
 for message in st.session_state.messages:
@@ -18,7 +19,7 @@ for message in st.session_state.messages:
         st.markdown(content)
 
 # Collect user input
-user_input = st.chat_input("Type your message...")
+user_input = st.chat_input("Type your personal finance question...")
 
 # Function to get a response from OpenAI
 def get_response(prompt):
