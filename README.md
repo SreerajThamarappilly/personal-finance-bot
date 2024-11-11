@@ -24,12 +24,18 @@ This chatbot is designed to help you manage your money better. You can ask quest
 - requirements.txt       # Python dependencies
 - README.md              # Project description
 - assets/                # Directory for storing branding images
-    - st_logo.png        # Custom logo for branding
+    - st_logo.png          # Custom logo for branding
  ```
 
 ## How to Use
 
-Once the app is running, you can access it in your web browser. Type your personal finance questions in the input box, and the chatbot will provide helpful answers.
+Once the app is running, you can access it in your web browser via url 
+
+```bash
+https://personal-finance-bot-btcxxdt8m7uatpiqwu5ia2.streamlit.app/
+```
+
+Type your personal finance questions in the input box, and the chatbot will provide helpful answers.
 
 Example questions:
 - "How can I save money every month?"
