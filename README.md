@@ -19,11 +19,13 @@ This chatbot is designed to help you manage your money better. You can ask quest
 
 ## Directory Structure
 
+ ```bash
 - app.py                 # Main application file
 - requirements.txt       # Python dependencies
 - README.md              # Project description
 - assets/                # Directory for storing branding images
     - st_logo.png        # Custom logo for branding
+ ```
 
 ## How to Use
 
