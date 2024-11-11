@@ -17,6 +17,14 @@ This chatbot is designed to help you manage your money better. You can ask quest
 - **OpenAI**: Powers the chatbot with advanced natural language understanding and conversational abilities.
 - **Python**: The main programming language for this project.
 
+## Directory Structure
+
+- app.py                 # Main application file
+- requirements.txt       # Python dependencies
+- README.md              # Project description
+- assets/                # Directory for storing branding images
+    - st_logo.png        # Custom logo for branding
+
 ## How to Use
 
 Once the app is running, you can access it in your web browser. Type your personal finance questions in the input box, and the chatbot will provide helpful answers.
